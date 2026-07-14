@@ -1,0 +1,105 @@
+site_name: Vision-Brain Modeling
+site_description: A structured knowledge base for Vision-Brain Modeling, Brain Decoding, and Brain-Guided Image Editing.
+site_author: Antigravity
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+  features:
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - tables
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js
+
+hooks:
+  - hooks/slides.py
+
+watch:
+  - resources/slides
+
+nav:
+  - Overview: index.md
+  - Foundations:
+      - foundations/index.md
+      - Brain Signals:
+          - foundations/brain-signals/index.md
+          - fMRI: foundations/brain-signals/fmri.md
+          - EEG: foundations/brain-signals/eeg.md
+          - MEG: foundations/brain-signals/meg.md
+          - fNIRS: foundations/brain-signals/fnirs.md
+          - PPG: foundations/brain-signals/ppg.md
+          - ECoG: foundations/brain-signals/ecog.md
+      - Vision Models:
+          - foundations/vision-models/index.md
+          - CNN: foundations/vision-models/cnn.md
+          - Vision Transformer: foundations/vision-models/vit.md
+          - CLIP: foundations/vision-models/clip.md
+          - DINO / DINOv2: foundations/vision-models/dino.md
+          - MAE: foundations/vision-models/mae.md
+          - SAM: foundations/vision-models/sam.md
+          - Diffusion Models: foundations/vision-models/diffusion.md
+      - Vision-Brain Modeling: foundations/vision-brain-modeling/index.md
+  - Tasks:
+      - tasks/index.md
+      - Brain-to-Image Reconstruction: tasks/brain-to-image-reconstruction.md
+      - Brain-to-Image Generation: tasks/brain-to-image-generation.md
+      - Brain-to-Image Editing: tasks/brain-to-image-editing.md
+  - Approaches:
+      - approaches/index.md
+      - Direct Mapping: approaches/direct-mapping.md
+      - Latent Alignment: approaches/latent-alignment.md
+      - Generative Conditioning: approaches/generative-conditioning.md
+      - Interactive Feedback: approaches/interactive-feedback.md
+  - Works:
+      - works/index.md
+      - Papers: 
+          - works/papers/index.md
+          - Zhou et al. (LoongX): works/papers/zhou-et-al-2026.md
+      - Challenges & Ethical Issues: works/challenges.md
+      - Future Directions: works/future-directions.md
+  - Resources:
+      - resources/index.md
+      - Datasets:
+          - resources/datasets/index.md
+          - NSD: resources/datasets/nsd.md
+          - Vim-1: resources/datasets/vim-1.md
+          - GOD: resources/datasets/god.md
+          - ds001506: resources/datasets/ds001506.md
+          - THINGS: resources/datasets/things.md
+          - BOLD5000: resources/datasets/bold5000.md
+          - EEG-ImageNet: resources/datasets/eeg-imagenet.md
+          - LoongX: resources/datasets/loongx.md
+      - Conferences: resources/conferences.md
+      - Journals: resources/journals.md
+      - Slides:
+          - Brain-to-Image Editing Intro: resources/slides/brain-to-image-editing-intro.md

@@ -1,0 +1,14 @@
+[project]
+name = "vision-brain-modeling"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=7.3.0",
+    "jupyter>=1.1.1",
+    "mkdocs>=1.6.1",
+    "mkdocs-jupyter>=0.26.3",
+    "numpy>=2.5.1",
+    "pandas>=3.0.3",
+]

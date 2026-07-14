@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brain-to-Image Tasks — Introduction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" id="highlight-theme" />
+    <style>
+      /* Slightly smaller base text than the theme default (~40px) */
+      .reveal { font-size: 34px; }
+      .reveal table { font-size: 0.68em; margin: 0 auto; }
+      .reveal pre { font-size: 0.52em; box-shadow: none; }
+      .reveal h3 { text-transform: none; }
+      .reveal .slides section .subtitle { color: #9fd; margin-top: 0.5em; }
+
+      /* Mermaid: strip reveal.js pre styles, centre the SVG */
+      .reveal pre.mermaid {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        margin: 0.5em auto;
+        font-size: 1em;
+        max-height: 52vh;
+        overflow: visible;
+        text-align: center;
+      }
+      .reveal pre.mermaid svg { max-height: 48vh; width: auto !important; }
+
+      /* Theme toggle button */
+      #theme-toggle {
+        position: fixed;
+        top: 10px;
+        right: 14px;
+        z-index: 9999;
+        background: rgba(128, 128, 128, 0.2);
+        border: 1px solid rgba(128, 128, 128, 0.4);
+        border-radius: 20px;
+        padding: 4px 13px;
+        cursor: pointer;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        backdrop-filter: blur(6px);
+        color: inherit;
+        transition: background 0.2s, border-color 0.2s;
+        user-select: none;
+      }
+      #theme-toggle:hover { background: rgba(128, 128, 128, 0.4); }
+    </style>
+  </head>
+  <body>
+    <!-- Dark / Light mode toggle -->
+    <button id="theme-toggle" title="Toggle dark / light mode">☀ Light</button>
+
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-markdown
+          data-separator="^\n---\n$"
+          data-separator-vertical="^\n--\n$"
+          data-separator-notes="^Note:"
+          data-charset="utf-8"
+        >
+          <script type="text/template">{{MARKDOWN_CONTENT}}</script>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+    <!-- Mermaid — loaded before Reveal so the class is available at init time -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      var isDark = true;
+      var renderCycle = 0; // unique ID counter per render pass
+
+      // Shared themeVariables — bigger text in all diagrams
+      var THEME_VARS = { fontSize: "20px" };
+
+      var MERMAID_DARK  = { startOnLoad: false, theme: "dark",    themeVariables: THEME_VARS };
+      var MERMAID_LIGHT = { startOnLoad: false, theme: "default", themeVariables: THEME_VARS };
+
+      mermaid.initialize(MERMAID_DARK);
+
+      Reveal.initialize({
+        hash: true,
+        slideNumber: "c/t",
+        transition: "slide",
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+        math: { katex: { trust: true } },
+      });
+
+      // Cache original mermaid source text before first render
+      function cacheMermaidSources() {
+        document.querySelectorAll("pre.mermaid").forEach(function (el) {
+          if (!el.dataset.src) {
+            el.dataset.src = el.textContent.trim();
+          }
+        });
+      }
+
+      // Re-render every diagram using mermaid.render() (proper async API — no stale state)
+      async function rerenderMermaid(config) {
+        mermaid.initialize(config);
+        renderCycle++;
+        var cycle = renderCycle;
+        var els = document.querySelectorAll("pre.mermaid");
+        for (var i = 0; i < els.length; i++) {
+          var el = els[i];
+          var src = el.dataset.src;
+          if (!src) continue;
+          // Unique element ID per render cycle so mermaid never finds a stale SVG node
+          var uid = "mrd-" + cycle + "-" + i;
+          try {
+            var result = await mermaid.render(uid, src);
+            el.innerHTML = result.svg;
+            el.setAttribute("data-processed", "true");
+          } catch (err) {
+            console.error("Mermaid render failed for element", i, err);
+          }
+        }
+      }
+
+      // Initial render after reveal.js markdown plugin finishes building the DOM
+      Reveal.on("ready", function () {
+        cacheMermaidSources();
+        rerenderMermaid(MERMAID_DARK);
+      });
+
+      // Re-render any diagram that became visible after the initial pass
+      Reveal.on("slidechanged", function () {
+        mermaid.run({ querySelector: "pre.mermaid:not([data-processed])" });
+      });
+
+      // Dark / Light toggle
+      var themeLink     = document.getElementById("theme");
+      var highlightLink = document.getElementById("highlight-theme");
+      var toggleBtn     = document.getElementById("theme-toggle");
+      var CDN = "https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/";
+
+      toggleBtn.addEventListener("click", function () {
+        isDark = !isDark;
+        if (isDark) {
+          themeLink.href        = CDN + "theme/black.css";
+          highlightLink.href    = CDN + "plugin/highlight/monokai.css";
+          toggleBtn.textContent = "☀ Light";
+          rerenderMermaid(MERMAID_DARK);
+        } else {
+          themeLink.href        = CDN + "theme/white.css";
+          highlightLink.href    = "https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css";
+          toggleBtn.textContent = "☾ Dark";
+          rerenderMermaid(MERMAID_LIGHT);
+        }
+      });
+    </script>
+  </body>
+</html>
