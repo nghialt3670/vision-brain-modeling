@@ -1,4 +1,4 @@
 # Brain-to-Image Editing Introduction
 
 
-- [Open Presentation](../../../slides/)
+- [Open Presentation](../../../slides/brain-to-image-editing-introduction/)

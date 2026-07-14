@@ -4,7 +4,7 @@
 
 ---
 
-- [Slides](../../slides/) — Reveal.js presentations
+- [Brain-to-Image Editing Introduction slides](../slides/brain-to-image-editing-introduction/) — Reveal.js presentation
 - [Datasets](datasets/index.md)
 - [Conferences](conferences.md)
 - [Journals](journals.md)

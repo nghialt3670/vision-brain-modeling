@@ -11,6 +11,8 @@ wheels/
 
 # MkDocs-generated files
 site
+docs/slides/*
+!docs/slides/index.md
 
 # Cache
 .cache

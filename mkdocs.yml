@@ -91,7 +91,8 @@ nav:
   - Resources:
       - resources/index.md
       - Slides:
-          - Brain-to-Image Editing Intro: resources/slides/brain-to-image-editing-intro.md
+          - slides/index.md
+          - Brain-to-Image Editing Intro: /vision-brain-modeling/slides/brain-to-image-editing-introduction/
       - Datasets:
           - resources/datasets/index.md
           - NSD: resources/datasets/nsd.md
@@ -104,4 +105,3 @@ nav:
           - LoongX: resources/datasets/loongx.md
       - Conferences: resources/conferences.md
       - Journals: resources/journals.md
-
