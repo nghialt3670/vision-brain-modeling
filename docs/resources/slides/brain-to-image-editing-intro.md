@@ -2,7 +2,7 @@
 
 Reveal.js introduction deck for the brain-to-image editing task.
 
-[Open full-screen presentation](/slides/){ .md-button .md-button--primary }
+[Open full-screen presentation](https://nghialt3670.github.io/vision-brain-modeling/slides/){ .md-button .md-button--primary }
 
 ---
 

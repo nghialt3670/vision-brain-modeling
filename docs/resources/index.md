@@ -7,7 +7,7 @@
 - [Datasets](datasets/index.md)
 - [Conferences](conferences.md)
 - [Journals](journals.md)
-- [Slides](/slides/) — Reveal.js presentations
+- [Slides](https://nghialt3670.github.io/vision-brain-modeling/slides/) — Reveal.js presentations
 - [Codebases & Libraries](index.md#codebases--libraries)
 - [Courses & Tutorials](index.md#courses--tutorials)
 

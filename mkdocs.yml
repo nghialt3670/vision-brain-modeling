@@ -1,5 +1,6 @@
 site_name: Vision-Brain Modeling
-site_description: A structured knowledge base for Vision-Brain Modeling, Brain Decoding, and Brain-Guided Image Editing.
+site_url: https://nghialt3670.github.io/vision-brain-modeling/
+site_description: A structured knowledge base for Vision-Brain Modeling.
 site_author: Antigravity
 
 theme:
