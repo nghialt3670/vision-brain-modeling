@@ -1,298 +1,373 @@
 # Brain-to-Image Editing
 
-### An Introduction
+## Decoding visual intent — not just visual content
 
-Vision-Brain Modeling Knowledge Base
+<div class="hero-line"></div>
 
-Note:
-Welcome. This deck introduces brain-to-image editing as a task, its relationship to reconstruction and generation, and showcases LoongX as a leading example.
-
----
-
-## Outline
-
-1. Vision-brain modeling landscape
-2. Related tasks: reconstruction & generation
-3. Brain-to-image editing defined
-4. Problem formulation & pipeline
-5. Motivation, significance, and applications
-6. Open challenges
-7. Case study: LoongX (Zhou et al., 2025)
-8. Future directions
-
----
-
-## Vision-Brain Modeling
-
-**Goal:** decode visual information and intent from neural signals
-
-| Signal | Examples |
-|--------|----------|
-| Brain | EEG, fNIRS, fMRI, MEG |
-| Peripheral | PPG (arousal / engagement) |
-| Output | Images — reconstructed, generated, or **edited** |
-
-The field has moved from *what did you see?* toward *what do you want to change?*
+**Weekly research-direction report**
 
 Note:
-Frame the shift from passive decoding to intention-driven interaction.
+Welcome. This talk introduces brain-to-image editing: a setting where neural signals guide changes to an existing image rather than merely reconstructing what someone saw.
 
 ---
 
-## Related Tasks
+## Roadmap
 
-Brain-to-image editing builds on two predecessor tasks — both map brain signals to an output image, but differ in what the signal encodes.
-
-<div style="text-align:center;">
-<p><strong>Reconstruction</strong> &mdash; $f: B \rightarrow I'$</p>
-<pre class="mermaid">
-graph LR
-    I["Visual Stimulus I"] -->|shown to| U["Subject U"]
-    U -->|neural response| B["Brain Signals B"]
-    B -->|input to| F["Reconstruction f"]
-    F -->|predicts| IP["Reconstructed Image"]
-    style I fill:#1565c0,color:#fff,stroke:#0d47a1
-    style U fill:#6a1b9a,color:#fff,stroke:#4a148c
-    style B fill:#2e7d32,color:#fff,stroke:#1b5e20
-    style F fill:#37474f,color:#fff,stroke:#263238
-    style IP fill:#bf360c,color:#fff,stroke:#7f0000
-</pre>
-<small>Ground-truth exists &rarr; measurable evaluation</small>
-<p><strong>Generation</strong> &mdash; $f: B \rightarrow I'$</p>
-<pre class="mermaid">
-graph LR
-    U["Subject U"] -->|imagines or dreams| B["Brain Signals B"]
-    B -->|input to| F["Generation f"]
-    F -->|predicts| IP["Generated Image"]
-    style U fill:#6a1b9a,color:#fff,stroke:#4a148c
-    style B fill:#2e7d32,color:#fff,stroke:#1b5e20
-    style F fill:#37474f,color:#fff,stroke:#263238
-    style IP fill:#bf360c,color:#fff,stroke:#7f0000
-</pre>
-<small>No ground truth &rarr; harder to evaluate</small>
+<div class="roadmap">
+  <div><b>01</b><span>Foundations</span><small>Signals, encoding &amp; decoding</small></div>
+  <div><b>02</b><span>Related tasks</span><small>Reconstruction &amp; generation</small></div>
+  <div><b>03</b><span>The problem</span><small>Brain-to-image editing</small></div>
+  <div><b>04</b><span>Current state</span><small>LoongX case study</small></div>
+  <div><b>05</b><span>Next steps</span><small>Research direction</small></div>
 </div>
 
 ---
 
-## Editing is Different
+# 01 — Foundations
 
-Both reconstruction and generation answer: *"What is in the subject's mind?"*
-
-Editing asks a fundamentally different question:
-
-> *"How does the subject want **this specific image** to change?"*
-
-- Image $I$ is an **input** — not just a training target
-- Brain signals encode **intended modification** — not current content
-- Requires **reference preservation**: unedited regions must stay unchanged
+## What do brain signals let us model?
 
 ---
 
-## Brain-to-Image Editing — Definition
+## Vision–Brain Modeling
 
-$$f: (I, B) \rightarrow I'$$
+<div class="split">
+<div>
+
+### A translation problem
+
+Connect **neural activity** to meaningful visual representations.
+
+</div>
+<div class="signal-stack">
+  <div><b>Encoding</b><span>image → predicted brain response</span></div>
+  <div><b>Decoding</b><span>brain response → image, concept, or intent</span></div>
+</div>
+</div>
+
+<p class="caption">This report focuses on decoding intent for brain-to-image editing.</p>
+
+Note:
+Encoding and decoding are the two established modelling directions. This report focuses on decoding intent.
+
+---
+
+## What can we measure?
+
+| Modality | Measures | Spatial | Temporal | Cost | Invasiveness |
+|---|---|---|---|---|---|
+| **fMRI** | Blood oxygen changes (BOLD) | High | Low | Very high | Non-invasive |
+| **EEG** | Electrical activity | Low | High | Low | Non-invasive |
+| **MEG** | Magnetic fields | High | High | Very high | Non-invasive |
+| **fNIRS** | Blood oxygen changes | Medium | Low | Moderate | Non-invasive |
+| **PPG** | Blood volume pulse | None (peripheral) | High | Very low | Non-invasive |
+| **ECoG** | Electrical activity on cortex | Very high | Very high | Very high | Invasive |
+
+<p class="caption">Measurement choices determine the information available for decoding, as well as practical constraints on deployment.</p>
+
+---
+
+# 02 — Related tasks
+
+## What has brain-to-image modelling already solved?
+
+---
+
+## Two established tasks
+
+<div class="task-grid">
+  <div class="task-card blue">
+    <h3>Reconstruction</h3>
+    <p class="formula">$f: B \rightarrow \hat{I}$</p>
+    <p>Recover the image a person was shown.</p>
+    <small>Ground truth exists → direct evaluation</small>
+  </div>
+  <div class="task-card purple">
+    <h3>Generation</h3>
+    <p class="formula">$f: B \rightarrow \hat{I}$</p>
+    <p>Visualize imagery, dreams, or concepts.</p>
+    <small>No single ground truth → ambiguous evaluation</small>
+  </div>
+</div>
+
+---
+
+## Reconstruction and generation
+
+<div class="related-task-diagrams">
+  <div>
+    <h3>Reconstruction</h3>
+<pre class="mermaid">
+graph TD
+    I["I — Visual Stimulus"] -->|presented to| U["U — Subject"]
+    U -->|produces| B["B — Brain Signals"]
+    B -->|input to| F["f — Reconstruction Function"]
+    F -->|predicts| IP["I' — Reconstructed Image"]
+
+    style I fill:#1565c0,color:#fff,stroke:#0d47a1,stroke-width:2px
+    style U fill:#6a1b9a,color:#fff,stroke:#4a148c,stroke-width:2px
+    style B fill:#2e7d32,color:#fff,stroke:#1b5e20,stroke-width:2px
+    style F fill:#37474f,color:#fff,stroke:#263238,stroke-width:2px
+    style IP fill:#bf360c,color:#fff,stroke:#7f0000,stroke-width:2px
+</pre>
+  </div>
+  <div>
+    <h3>Generation</h3>
+<pre class="mermaid">
+graph TD
+    U["U — Subject"] -->|imagines or dreams| B["B — Brain Signals"]
+    B -->|input to| F["f — Generation Function"]
+    F -->|predicts| IP["I' — Generated Image"]
+
+    style U fill:#6a1b9a,color:#fff,stroke:#4a148c,stroke-width:2px
+    style B fill:#2e7d32,color:#fff,stroke:#1b5e20,stroke-width:2px
+    style F fill:#37474f,color:#fff,stroke:#263238,stroke-width:2px
+    style IP fill:#bf360c,color:#fff,stroke:#7f0000,stroke-width:2px
+</pre>
+  </div>
+</div>
+
+<p class="caption">Both tasks decode content from brain activity; editing introduces a reference image and decodes intended change.</p>
+
+---
+
+# 03 — Brain-to-image editing problem
+
+## From recovering content to decoding change
+
+---
+
+## The central idea
+
+> **Can a system infer how you want an image to change—directly from brain activity?**
+
+<div class="three-cards">
+  <div><strong>See</strong><br><span>an image</span></div>
+  <div><strong>Imagine</strong><br><span>an edit</span></div>
+  <div><strong>Create</strong><br><span>the revised image</span></div>
+</div>
+
+<p class="caption">The reference image provides context; neural signals communicate intent.</p>
+
+---
+
+## Editing changes the question
+
+<div class="quote-stage">
+  <p class="muted">Reconstruction &amp; generation ask</p>
+  <h3>“What is in the subject’s mind?”</h3>
+  <div class="arrow-down">↓</div>
+  <p class="accent">Editing asks</p>
+  <h2>“How should <em>this image</em> change?”</h2>
+</div>
+
+---
+
+## Brain-to-image editing
+
+<div class="editing-layout">
+<div class="editing-copy">
+
+### Definition
+
+<p class="big-formula">f: (I, B) → I′</p>
+
+Learn an editing function that maps an observed image <i>I</i> and brain signals <i>B</i>—recorded while the subject imagines modifications to <i>I</i>—into an edited image <i>I′</i> matching the subject’s intended changes.
+
+<div class="io-points">
+  <div><b>Input</b><span>Reference image + imagined edit signals</span></div>
+  <div><b>Output</b><span>Intended edit with reference preservation</span></div>
+</div>
+
+</div>
+<div class="editing-diagram">
 
 <pre class="mermaid">
-graph LR
-    I["Observed Image I"] -->|shown to| U["Subject U"]
-    U -->|imagines edits| B["Brain Signals B"]
-    I -->|reference| F["Editing Function f"]
-    B -->|intent| F
-    F -->|predicts| IP["Edited Image"]
-    style I fill:#1565c0,color:#fff,stroke:#0d47a1
-    style U fill:#6a1b9a,color:#fff,stroke:#4a148c
-    style B fill:#2e7d32,color:#fff,stroke:#1b5e20
-    style F fill:#37474f,color:#fff,stroke:#263238
-    style IP fill:#bf360c,color:#fff,stroke:#7f0000
+graph TD
+    I["I — Observed Image"] -->|presented to| U["U — Subject"]
+    U -->|imagines modifications| B["B — Brain Signals"]
+
+    I -->|input to| F["f — Editing Function"]
+    B -->|input to| F
+
+    F -->|predicts| IP["I' — Edited Image"]
+
+    style I fill:#1565c0,color:#fff,stroke:#0d47a1,stroke-width:2px
+    style U fill:#6a1b9a,color:#fff,stroke:#4a148c,stroke-width:2px
+    style B fill:#2e7d32,color:#fff,stroke:#1b5e20,stroke-width:2px
+    style F fill:#37474f,color:#fff,stroke:#263238,stroke-width:2px
+    style IP fill:#bf360c,color:#fff,stroke:#7f0000,stroke-width:2px
 </pre>
 
----
-
-## Problem Formulation
-
-Given:
-
-- **Observed image** `I` shown to the subject
-- **Brain signals** `B` recorded while the subject imagines edits to `I`
-
-Learn:
-
-$$f: (I, B) \rightarrow I'$$
-
-where `I'` reflects the subject's **intended changes**, not just what they currently see.
+</div>
+</div>
 
 ---
 
-## Motivation
+## What makes the task hard?
 
-- Reconstruction recovers **what** was perceived — not **how to modify** a scene
-- Many applications need to change an **existing image**, not regenerate from scratch
-- Full image regeneration is wasteful for local or attribute-level edits
-- Users may know *how* an image should change without being able to describe it in text
-
----
-
-## Significance
-
-- Shifts brain decoding from **what you see** → **how you want it to change**
-- Enables **intention-driven**, interactive BCIs
-- Finer control than one-shot reconstruction or generation
-- Foundation for brain-guided creative and assistive tools
+<div class="challenge-grid">
+  <div><b>01</b><h3>Decode change</h3><p>Infer the intended transformation, not just perceived content.</p></div>
+  <div><b>02</b><h3>Preserve identity</h3><p>Keep everything outside the intended edit stable.</p></div>
+  <div><b>03</b><h3>Handle ambiguity</h3><p>One neural pattern can support many plausible edits.</p></div>
+  <div><b>04</b><h3>Work with noise</h3><p>Edit intent is subtle in low-signal neural measurements.</p></div>
+</div>
 
 ---
 
-## Applications
+## The non-negotiable constraint
 
-| Area | Benefit |
-|------|---------|
-| **Hands-free editing** | No keyboard, mouse, touchscreen, or text prompt |
-| **Accessibility** | Creative control for motor or speech impairments |
-| **Brain-guided creativity** | Direct cognitive intent → image manipulation |
-| **Adaptive human-AI** | Systems infer preferences from neural feedback |
+### Change what matters. Preserve what does not.
+
+<div class="preserve">
+  <div><span class="dot edit"></span><b>Edited region</b><small>must follow decoded intent</small></div>
+  <div><span class="dot keep"></span><b>Reference region</b><small>must remain recognizable and stable</small></div>
+</div>
+
+<p class="caption">Editing quality is a balance: semantic alignment × reference preservation.</p>
 
 ---
 
-## Challenges
+## Why this matters
 
-| Challenge | Why it matters |
-|-----------|----------------|
-| **Intent decoding** | Must infer desired *change*, not current content |
-| **Reference preservation** | Unedited regions should stay unchanged |
-| **Weak neural signals** | Edit intent is subtle and noisy |
-| **Semantic ambiguity** | One neural pattern → many possible edits |
+<div class="impact-grid">
+  <div><span>⌁</span><h3>Accessibility</h3><p>Creative control without a keyboard, mouse, or speech.</p></div>
+  <div><span>✦</span><h3>Co-creation</h3><p>Make generative tools respond to subtle, pre-verbal intent.</p></div>
+  <div><span>↻</span><h3>Adaptive AI</h3><p>Use neural feedback to refine outputs in an interaction loop.</p></div>
+</div>
+
+---
+
+# 04 — Current state
+
+## A first multimodal editing system
+
+---
+
+## Case study: LoongX
+
+<p class="eyebrow">ZHOU ET AL. · NEURIPS 2025</p>
+
+### Neural-driven image editing with multimodal signals
+
+> A diffusion-transformer editor conditioned on brain and body signals—not text prompts alone.
+
+[arXiv:2507.05397](https://arxiv.org/abs/2507.05397)
 
 Note:
-The first two challenges are unique to editing — reconstruction and generation do not face the preservation or intent-decoding problems.
+Position LoongX as a concrete implementation of f(I,B) → I′. It combines multiple signals, including optional speech, rather than assuming a single brain modality carries all intent.
 
 ---
 
-## Traditional vs. Brain-Driven Editing
+## LoongX: from signals to an edit
 
-| Traditional | Brain-to-image editing |
-|-------------|------------------------|
-| Text prompts | Neural / physiological signals |
-| Masks, sketches, drag | Imagined or intended transformation |
-| Explicit UI interaction | Hands-free, implicit intent |
-| Accessible to typical users | Promising for assistive BCIs |
+<pre class="mermaid">
+flowchart LR
+    subgraph S["Multimodal signals"]
+      direction TB
+      GAP[" "]:::spacer
+      E[EEG] ~~~ N[fNIRS] ~~~ P[PPG] ~~~ M[Motion] ~~~ V[Speech]
+      GAP ~~~ E
+    end
+    S --> C["CS3 encoders"] --> G["Dynamic gated fusion"] --> D["DiT editor"] --> O["Edited image I′"]
+    I["Reference image I"] --> D
+    classDef signal fill:#2563eb,color:#fff,stroke:#1d4ed8
+    classDef image fill:#0891b2,color:#fff,stroke:#0e7490
+    classDef encoder fill:#0f766e,color:#fff,stroke:#115e59
+    classDef fusion fill:#7c3aed,color:#fff,stroke:#6d28d9
+    classDef editor fill:#be123c,color:#fff,stroke:#9f1239
+    classDef output fill:#ea580c,color:#fff,stroke:#c2410c
+    classDef spacer fill:transparent,stroke:transparent,color:transparent
+    class E,N,P,M,V signal
+    class I image
+    class C encoder
+    class G fusion
+    class D editor
+    class O output
+    style S fill:#eff6ff,stroke:#60a5fa,color:#1d4ed8,stroke-width:2px
+</pre>
 
----
-
-## Case Study: LoongX
-
-**Neural-Driven Image Editing** — Zhou et al. (NeurIPS 2025)
-
-> Replace text prompts with multimodal brain and body signals to drive a diffusion transformer editor.
-
-Paper: [arXiv:2507.05397](https://arxiv.org/abs/2507.05397)
-
-LoongX is the first large-scale multimodal framework for brain-conditioned image editing.
-
-Note:
-LoongX directly instantiates the editing formulation f:(I,B)->I'.
-
----
-
-## LoongX — Method Overview
-
-```
-EEG ────────┐
-fNIRS ──────┤
-PPG ────────┼──► CS3 encoders ──► Dynamic Gated Fusion ──► DiT editor ──► I'
-Motion ─────┤                              ▲
-Speech ─────┘                              │
-                                    Input image I
-```
-
-**CS3 encoder** — cross-scale state-space modeling per modality  
-**DGF** — learnable gates for adaptive fusion  
-**DiT** — diffusion transformer for image editing
+<p class="caption"><b>CS3</b> models each modality at multiple scales · <b>gated fusion</b> weights their contributions · <b>DiT</b> generates the edit.</p>
 
 ---
 
-## LoongX — Modality Roles
+## Different signals, complementary clues
 
-| Modality | Contribution |
-|----------|--------------|
-| **EEG** | High-level semantic intent |
-| **fNIRS** | Robust semantic representation |
-| **PPG** | Engagement and physiological state |
-| **Motion** | Contextual behavioral cues |
-| **Speech** | Explicit semantic guidance (optional) |
+| Signal | Primary role |
+|---|---|
+| **EEG + fNIRS** | Semantic intention and neural representation |
+| **PPG + motion** | Engagement and behavioral context |
+| **Speech (optional)** | Explicit semantic guidance |
 
-Multimodal fusion captures **complementary** aspects of user intent.
+<p class="caption">Fusion is useful because intent is distributed: no single signal is sufficient in every moment.</p>
 
 ---
 
-## LoongX — L-Mind Dataset
+## L-Mind dataset
 
-| Property | Value |
-|----------|-------|
-| Samples | ~24,000 image-edit pairs |
-| Subjects | 12 |
-| Modalities | EEG, fNIRS, PPG, motion, speech |
-| Task | Subject views source image and imagines the edit |
+<div class="stat-row">
+  <div><strong>~24K</strong><span>image–edit pairs</span></div>
+  <div><strong>12</strong><span>subjects</span></div>
+  <div><strong>5</strong><span>signal modalities</span></div>
+  <div><strong>1</strong><span>editing task</span></div>
+</div>
 
-First dataset pairing **multimodal BCI signals** with image-editing intent.
+<p class="caption">Subjects view a source image and imagine its intended transformation.</p>
 
 ---
 
-## LoongX — Results
+## What the results suggest
 
 | Metric | Text baseline | Neural only | Neural + speech |
-|--------|---------------|-------------|-----------------|
-| **CLIP-I** | 0.6558 | **0.6605** | — |
-| **DINO** | 0.4636 | **0.4812** | — |
-| **CLIP-T** | 0.2549 | — | **0.2588** |
+|---|---:|---:|---:|
+| **CLIP-I** · image alignment | 0.6558 | **0.6605** | — |
+| **DINO** · visual similarity | 0.4636 | **0.4812** | — |
+| **CLIP-T** · text alignment | 0.2549 | — | **0.2588** |
 
-**Key finding:** neural signals alone can match or exceed text-driven editing on visual alignment metrics.
-
----
-
-## LoongX — Takeaways
-
-- Brain signals can **directly guide** image editing
-- Multimodal fusion improves robustness and semantics
-- Neural + speech is **complementary**, not redundant
-- Hands-free creative tools are becoming **feasible**
+> **Takeaway:** neural signals can contribute useful editing guidance—and speech adds complementary information.
 
 ---
 
-## Limitations (Current State)
+# 05 — Next steps
 
-- Abstract or fine-grained instructions remain difficult
-- Requires specialized sensing hardware
-- Neural intent is hard to interpret and debug
-- Generalization to unseen edit types is unclear
+## From ideation to a focused research plan
 
 ---
 
-## Future Directions
+## Current limitations
 
-- **Real-time** interactive editing loops
-- **VR / AR** editing environments
-- **Personalized** models per user
-- Additional modalities: eye tracking, EMG, higher-density EEG
-- Stronger **reference preservation** and edit controllability
-
----
-
-## Summary
-
-| | |
-|---|---|
-| **Task** | $f: (I, B) \rightarrow I'$ — decode intended edits |
-| **Related to** | Reconstruction and Generation (both $f: B \rightarrow I'$) |
-| **Key distinction** | Reference image as input; signals encode *change*, not content |
-| **Promise** | Accessible, hands-free, brain-guided image editing |
-| **Example** | LoongX — multimodal BCI + diffusion transformer |
+<div class="limit-list">
+  <div><b>Fine-grained intent</b><span>Abstract or precise instructions remain difficult.</span></div>
+  <div><b>Hardware burden</b><span>Reliable sensing is still specialized and inconvenient.</span></div>
+  <div><b>Generalization</b><span>Performance on unseen users and edit types is uncertain.</span></div>
+  <div><b>Interpretability</b><span>It is hard to diagnose why a decoded edit was wrong.</span></div>
+</div>
 
 ---
 
-# Thank You
+## Next steps for this research direction
 
-**Vision-Brain Modeling** knowledge base
+<div class="future-path">
+  <div><b>01 · Build foundations</b><span>Strengthen neural-science knowledge and deep-learning fundamentals, with emphasis on generative image models.</span></div>
+  <div><b>02 · Map the literature</b><span>Review editing papers alongside reconstruction and generation: tasks, datasets, protocols, and evaluation.</span></div>
+  <div><b>03 · Synthesize approaches</b><span>Document recurring representations, conditioning strategies, model designs, and limitations; then identify a tractable research gap.</span></div>
+</div>
 
-Questions?
+<p class="caption">Near-term deliverable: a structured research map that connects foundations, papers, common approaches, and open questions.</p>
+
+---
+
+# Closing summary
+
+## Research direction: brain-to-image editing
+
+<div class="summary-stack">
+  <div><b>Problem:</b> decode an intended modification from brain signals while preserving the reference image.</div>
+  <div><b>Current state:</b> multimodal work such as LoongX demonstrates early feasibility, but robust editing remains open.</div>
+  <div><b>Immediate priority:</b> strengthen foundations, review related-task literature, and map common approaches before defining a focused research question.</div>
+</div>
+
+<p class="subtitle">Discussion</p>
 
 Note:
-Point audience to the docs site and LoongX paper for deeper reading.
+Close by restating that this is an ideation-stage direction. Invite discussion on the most promising foundational topics, papers, and possible research gaps.

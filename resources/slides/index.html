@@ -5,15 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brain-to-Image Tasks — Introduction</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" id="highlight-theme" />
+    <!-- Default to white theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme" />
+    <!-- Default to github light highlight style -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css" id="highlight-theme" />
     <style>
-      /* Slightly smaller base text than the theme default (~40px) */
-      .reveal { font-size: 34px; }
-      .reveal table { font-size: 0.68em; margin: 0 auto; }
+      :root { --ink: #0f172a; --muted: #64748b; --teal: #0f766e; --blue: #2563eb; --violet: #6d28d9; --orange: #ea580c; --line: #dbe4ee; }
+      .reveal { font-size: 31px; color: var(--ink); }
+      .reveal .slides { text-align: left; }
+      .reveal .slides section { padding: 24px 44px; }
+      .reveal h1, .reveal h2, .reveal h3 { color: var(--ink); text-transform: none; letter-spacing: -0.035em; }
+      .reveal h1 { font-size: 1.92em; font-weight: 800; }
+      .reveal h2 { font-size: 1.48em; font-weight: 760; margin-bottom: 0.5em; }
+      .reveal h3 { font-size: 1.02em; font-weight: 720; }
+      .reveal p { line-height: 1.35; }
+      .reveal strong { color: var(--teal); }
+      .reveal blockquote { width: 90%; border-left: 6px solid var(--teal); background: #f0fdfa; box-shadow: none; padding: 0.65em 0.9em; text-align: left; font-style: normal; }
+      .reveal table { font-size: 0.67em; margin: 0.5em auto; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 14px; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.07); }
+      .reveal table th { background: #0f172a; color: #fff; font-weight: 650; }
+      .reveal table td, .reveal table th { border: 0; padding: 0.48em 0.75em; }
+      .reveal table tr:nth-child(even) { background: #f8fafc; }
       .reveal pre { font-size: 0.52em; box-shadow: none; }
-      .reveal h3 { text-transform: none; }
-      .reveal .slides section .subtitle { color: #9fd; margin-top: 0.5em; }
+      .reveal .subtitle { color: var(--teal); margin-top: 0.5em; font-size: 0.78em; }
+      .reveal .slide-number {
+        right: 22px;
+        bottom: 20px;
+        padding: 0.38em 0.62em;
+        border-radius: 9px;
+        background: rgba(15, 23, 42, 0.88);
+        color: #fff;
+        font-size: 20px;
+        font-weight: 750;
+        letter-spacing: 0.03em;
+      }
+      .reveal .caption { color: var(--muted); font-size: 0.57em; margin-top: 0.8em; text-align: center; }
+      .reveal .eyebrow { color: var(--teal); font-size: 0.48em; font-weight: 800; letter-spacing: 0.13em; }
+      .reveal .muted { color: var(--muted); margin-bottom: 0.15em; }
+      .reveal .accent { color: var(--teal); font-weight: 750; margin: 0.35em 0 0; }
+      .reveal .hero-line { height: 7px; width: 142px; background: linear-gradient(90deg, var(--teal), var(--blue), var(--violet)); border-radius: 6px; margin: 0.8em 0; }
+      .reveal .big-formula { font-size: 1.55em; font-weight: 700; text-align: center; color: var(--teal); margin: 0.35em 0; }
+      .split { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.25em; align-items: center; }
+      .editing-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1em; align-items: center; }
+      .editing-copy { padding: 0.25em 0.2em; }
+      .editing-copy h3 { color: var(--teal); margin: 0 0 0.35em; }
+      .editing-copy .big-formula { text-align: left; font-size: 1.28em; margin: 0.1em 0 0.45em; }
+      .editing-copy > p { font-size: 0.64em; line-height: 1.45; }
+      .editing-diagram .mermaid { margin: 0; max-height: 50vh; }
+      .editing-diagram .mermaid svg { max-height: 45vh; }
+      .io-points { display: grid; gap: 0.35em; margin-top: 0.7em; }
+      .io-points div { padding: 0.42em 0.55em; background: #f0fdfa; border-left: 3px solid var(--teal); }
+      .io-points b { display: block; color: var(--teal); font-size: 0.57em; }
+      .io-points span { display: block; color: var(--muted); font-size: 0.5em; margin-top: 0.12em; }
+      .signal-stack { display: grid; gap: 0.35em; }
+      .signal-stack div { padding: 0.55em 0.7em; border: 1px solid var(--line); border-radius: 12px; background: #f8fafc; }
+      .signal-stack b { display: inline-block; min-width: 5em; color: var(--teal); }
+      .signal-stack span { color: var(--muted); font-size: 0.75em; }
+      .three-cards, .task-grid, .challenge-grid, .impact-grid, .stat-row, .future-path { display: grid; gap: 0.55em; }
+      .three-cards { grid-template-columns: repeat(3, 1fr); margin: 1.1em auto; width: 82%; text-align: center; }
+      .three-cards div { padding: 0.75em; border-radius: 14px; background: #f1f5f9; border-top: 4px solid var(--teal); }
+      .three-cards div:nth-child(2) { border-color: var(--blue); }.three-cards div:nth-child(3) { border-color: var(--violet); }
+      .three-cards strong { display: block; font-size: 1.05em; }.three-cards span { font-size: 0.65em; color: var(--muted); }
+      .roadmap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35em; margin-top: 1.4em; }
+      .roadmap div { padding: 0.65em 0.42em; min-height: 5.6em; border-left: 3px solid var(--line); background: #f8fafc; }
+      .roadmap b { color: var(--teal); font-size: 0.64em; display: block; }.roadmap span { display: block; font-weight: 750; font-size: 0.66em; margin: 0.35em 0; }.roadmap small { color: var(--muted); font-size: 0.46em; line-height: 1.2; display: block; }
+      .task-grid { grid-template-columns: 1fr 1fr; margin-top: 0.75em; }
+      .task-card { padding: 0.9em 1em; border-radius: 16px; color: #fff; min-height: 6.9em; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 7px 18px rgba(15,23,42,0.14); }.task-card h3, .task-card p, .task-card small { color: #fff; }.task-card h3 { margin: 0; }.task-card .formula { font-size: 1.1em; font-weight: 700; margin: 0.42em 0; }.task-card .katex, .task-card .katex * { color: #fff !important; }.task-card p:not(.formula) { font-size: 0.66em; margin: 0.3em 0; }.task-card small { font-size: 0.48em; opacity: 0.85; }.task-card.blue { background: #0f6b78; }.task-card.purple { background: #6d28d9; }
+      .related-task-diagrams { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 0.2em; }.related-task-diagrams > div { background: #f8fafc; border: 1px solid var(--line); border-radius: 14px; padding: 0.55em 0.65em; }.related-task-diagrams h3 { margin: 0; font-size: 0.78em; }.related-task-diagrams pre.mermaid { margin: 0.25em auto; max-height: 39vh; }.related-task-diagrams pre.mermaid svg { max-height: 35vh; }.related-task-diagrams p { color: var(--muted); font-size: 0.48em; margin: 0.2em 0 0; text-align: center; }
+      .quote-stage { text-align: center; margin-top: 0.6em; }.quote-stage h3 { font-size: 1em; }.quote-stage h2 { font-size: 1.32em; color: var(--teal); }.quote-stage em { color: var(--orange); }.arrow-down { color: var(--blue); font-size: 1.35em; }
+      .challenge-grid { grid-template-columns: 1fr 1fr; }.challenge-grid > div { border: 1px solid var(--line); border-radius: 12px; padding: 0.55em 0.7em; background: #fff; }.challenge-grid b { color: var(--orange); font-size: 0.55em; }.challenge-grid h3 { margin: 0.18em 0; font-size: 0.78em; }.challenge-grid p { font-size: 0.55em; color: var(--muted); margin: 0; }
+      .preserve { display: flex; justify-content: center; gap: 2em; margin: 1.5em 0 0.7em; }.preserve div { display: grid; grid-template-columns: 0.9em auto; column-gap: 0.45em; align-items: center; }.preserve b { font-size: 0.75em; }.preserve small { grid-column: 2; color: var(--muted); font-size: 0.48em; }.dot { width: 0.7em; height: 0.7em; border-radius: 50%; grid-row: span 2; }.dot.edit { background: var(--orange); }.dot.keep { background: var(--teal); }
+      .impact-grid { grid-template-columns: repeat(3, 1fr); margin-top: 0.9em; }.impact-grid div { background: #f8fafc; border-radius: 14px; padding: 0.75em; }.impact-grid span { color: var(--violet); font-size: 1.1em; }.impact-grid h3 { margin: 0.22em 0; font-size: 0.78em; }.impact-grid p { font-size: 0.54em; color: var(--muted); margin: 0; }
+      .stat-row { grid-template-columns: repeat(4, 1fr); margin: 1.4em 0; text-align: center; }.stat-row div { border-right: 1px solid var(--line); }.stat-row div:last-child { border: 0; }.stat-row strong { display: block; font-size: 1.48em; }.stat-row span { display: block; color: var(--muted); font-size: 0.55em; }
+      .limit-list { display: grid; gap: 0.28em; }.limit-list div { display: grid; grid-template-columns: 8em 1fr; gap: 0.5em; padding: 0.4em 0.65em; background: #f8fafc; border-left: 3px solid var(--orange); }.limit-list b { font-size: 0.65em; }.limit-list span { color: var(--muted); font-size: 0.58em; }
+      .future-path { grid-template-columns: repeat(3, 1fr); margin-top: 1.4em; }.future-path div { padding: 0.8em; border-top: 4px solid var(--teal); background: #f8fafc; }.future-path div:nth-child(2) { border-color: var(--blue); }.future-path div:nth-child(3) { border-color: var(--violet); }.future-path b { display: block; color: var(--teal); font-size: 0.62em; }.future-path span { display: block; font-size: 0.63em; margin-top: 0.38em; }
+      .summary-stack { display: grid; gap: 0.5em; margin-top: 0.75em; }.summary-stack div { padding: 0.55em 0.75em; background: #f0fdfa; border-radius: 10px; font-size: 0.68em; }.summary-stack div:nth-child(2) { background: #eff6ff; }.summary-stack div:nth-child(3) { background: #f5f3ff; }
 
       /* Mermaid: strip reveal.js pre styles, centre the SVG */
       .reveal pre.mermaid {
@@ -23,37 +88,21 @@
         padding: 0;
         margin: 0.5em auto;
         font-size: 1em;
-        max-height: 52vh;
+        max-height: 48vh;
         overflow: visible;
         text-align: center;
       }
-      .reveal pre.mermaid svg { max-height: 48vh; width: auto !important; }
-
-      /* Theme toggle button */
-      #theme-toggle {
-        position: fixed;
-        top: 10px;
-        right: 14px;
-        z-index: 9999;
-        background: rgba(128, 128, 128, 0.2);
-        border: 1px solid rgba(128, 128, 128, 0.4);
-        border-radius: 20px;
-        padding: 4px 13px;
-        cursor: pointer;
-        font-size: 13px;
-        letter-spacing: 0.02em;
-        backdrop-filter: blur(6px);
-        color: inherit;
-        transition: background 0.2s, border-color 0.2s;
-        user-select: none;
+      .reveal pre.mermaid svg {
+        display: block;
+        width: 100% !important;
+        max-width: 100%;
+        max-height: 43vh;
+        height: auto !important;
+        margin: 0 auto;
       }
-      #theme-toggle:hover { background: rgba(128, 128, 128, 0.4); }
     </style>
   </head>
   <body>
-    <!-- Dark / Light mode toggle -->
-    <button id="theme-toggle" title="Toggle dark / light mode">☀ Light</button>
-
     <div class="reveal">
       <div class="slides">
         <section
@@ -76,20 +125,22 @@
     <!-- Mermaid — loaded before Reveal so the class is available at init time -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
-      var isDark = true;
-      var renderCycle = 0; // unique ID counter per render pass
+      // Render diagrams only after Reveal has created the markdown slides. Rendering
+      // them again while Reveal is changing slides can interrupt Mermaid mid-draw.
+      var renderCycle = 0;
+      var MERMAID_CONFIG = {
+        startOnLoad: false,
+        theme: "default",
+        themeVariables: { fontSize: "20px" },
+        flowchart: { useMaxWidth: false, htmlLabels: false }
+      };
 
-      // Shared themeVariables — bigger text in all diagrams
-      var THEME_VARS = { fontSize: "20px" };
-
-      var MERMAID_DARK  = { startOnLoad: false, theme: "dark",    themeVariables: THEME_VARS };
-      var MERMAID_LIGHT = { startOnLoad: false, theme: "default", themeVariables: THEME_VARS };
-
-      mermaid.initialize(MERMAID_DARK);
+      mermaid.initialize(MERMAID_CONFIG);
 
       Reveal.initialize({
         hash: true,
         slideNumber: "c/t",
+        showSlideNumber: "all",
         transition: "slide",
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
         math: { katex: { trust: true } },
@@ -104,9 +155,10 @@
         });
       }
 
-      // Re-render every diagram using mermaid.render() (proper async API — no stale state)
-      async function rerenderMermaid(config) {
-        mermaid.initialize(config);
+      // Render every diagram once with unique IDs. This avoids the partial first
+      // render caused by Mermaid and Reveal both mutating the same elements.
+      async function renderMermaid() {
+        mermaid.initialize(MERMAID_CONFIG);
         renderCycle++;
         var cycle = renderCycle;
         var els = document.querySelectorAll("pre.mermaid");
@@ -124,38 +176,19 @@
             console.error("Mermaid render failed for element", i, err);
           }
         }
+        Reveal.sync();
+        Reveal.layout();
       }
 
-      // Initial render after reveal.js markdown plugin finishes building the DOM
-      Reveal.on("ready", function () {
+      // Wait for the browser's first layout and any web fonts before rendering.
+      // Mermaid can otherwise calculate a clipped SVG on the initial page load.
+      Reveal.on("ready", async function () {
         cacheMermaidSources();
-        rerenderMermaid(MERMAID_DARK);
-      });
-
-      // Re-render any diagram that became visible after the initial pass
-      Reveal.on("slidechanged", function () {
-        mermaid.run({ querySelector: "pre.mermaid:not([data-processed])" });
-      });
-
-      // Dark / Light toggle
-      var themeLink     = document.getElementById("theme");
-      var highlightLink = document.getElementById("highlight-theme");
-      var toggleBtn     = document.getElementById("theme-toggle");
-      var CDN = "https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/";
-
-      toggleBtn.addEventListener("click", function () {
-        isDark = !isDark;
-        if (isDark) {
-          themeLink.href        = CDN + "theme/black.css";
-          highlightLink.href    = CDN + "plugin/highlight/monokai.css";
-          toggleBtn.textContent = "☀ Light";
-          rerenderMermaid(MERMAID_DARK);
-        } else {
-          themeLink.href        = CDN + "theme/white.css";
-          highlightLink.href    = "https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css";
-          toggleBtn.textContent = "☾ Dark";
-          rerenderMermaid(MERMAID_LIGHT);
-        }
+        await new Promise(function (resolve) {
+          requestAnimationFrame(function () { requestAnimationFrame(resolve); });
+        });
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        await renderMermaid();
       });
     </script>
   </body>
