@@ -4,7 +4,7 @@
 
 <div class="hero-line"></div>
 
-**Weekly research-direction report**
+**Weekly research report**
 
 Note:
 Welcome. This talk introduces brain-to-image editing: a setting where neural signals guide changes to an existing image rather than merely reconstructing what someone saw.
