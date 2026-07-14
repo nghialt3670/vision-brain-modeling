@@ -1,191 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/approaches/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/approaches/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/approaches/direct-mapping/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/approaches/direct-mapping/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/approaches/generative-conditioning/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/approaches/generative-conditioning/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/approaches/latent-alignment/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/approaches/latent-alignment/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/datasets/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/datasets/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/ecog/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/ecog/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/eeg/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/eeg/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/fmri/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/fmri/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/fnirs/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/fnirs/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/meg/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/meg/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/brain-signals/ppg/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/brain-signals/ppg/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-brain-modeling/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-brain-modeling/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/clip/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/clip/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/cnn/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/cnn/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/diffusion/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/diffusion/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/dino/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/dino/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/mae/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/mae/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/sam/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/sam/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/foundations/vision-models/vit/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/foundations/vision-models/vit/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/problems/brain-to-image-generation/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/problems/brain-to-image-generation/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/conferences/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/conferences/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/journals/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/journals/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/bold5000/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/bold5000/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/ds001506/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/ds001506/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/eeg-imagenet/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/eeg-imagenet/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/god/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/god/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/loongx/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/loongx/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/nsd/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/nsd/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/things/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/things/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/datasets/vim-1/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/datasets/vim-1/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/resources/slides/brain-to-image-editing-intro/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/resources/slides/brain-to-image-editing-intro/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/tasks/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/tasks/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/tasks/brain-to-image-editing/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/tasks/brain-to-image-editing/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/tasks/brain-to-image-generation/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/tasks/brain-to-image-generation/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/tasks/brain-to-image-reconstruction/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/tasks/brain-to-image-reconstruction/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/works/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/works/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/works/challenges/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/works/challenges/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/works/future-directions/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/works/future-directions/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/works/papers/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/works/papers/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/works/papers/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/works/papers/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
     <url>
-         <loc>https://nghialt3670.github.io/vision-brain-modeling-mkdocs/works/papers/zhou-et-al-2026/</loc>
+         <loc>https://nghialt3670.github.io/vision-brain-modeling/works/papers/zhou-et-al-2026/</loc>
          <lastmod>2026-07-14</lastmod>
     </url>
 </urlset>
