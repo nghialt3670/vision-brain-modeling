@@ -24,9 +24,13 @@ def on_pre_build(config, **kwargs) -> None:
 
     template = template_path.read_text(encoding="utf-8")
     deck_names = {md_file.stem for md_file in SRC.glob("*.md")}
+    assets_dir = SRC / "assets"
+
+    if assets_dir.exists():
+        shutil.copytree(assets_dir, slides_dir / "assets", dirs_exist_ok=True)
 
     for deck_dir in slides_dir.iterdir():
-        if deck_dir.is_dir() and deck_dir.name not in deck_names:
+        if deck_dir.is_dir() and deck_dir.name not in deck_names | {"assets"}:
             shutil.rmtree(deck_dir)
 
     for md_file in sorted(SRC.glob("*.md")):

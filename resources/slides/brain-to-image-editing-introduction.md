@@ -131,6 +131,13 @@ graph TD
 
 ---
 
+## Related-task example: fMRI reconstruction
+
+<img class="paper-figure results-grid" src="../assets/neuropictor-reconstruction-examples.jpg" alt="fMRI image reconstruction examples comparing ground-truth images with NeuroPictor, MindEye, and Brain-Diff outputs" />
+<p class="caption">fMRI-to-image reconstruction examples: ground truth at left, then outputs from NeuroPictor, MindEye, and Brain-Diff. Adapted from Huo et al., <i>NeuroPictor</i> (ECCV 2024).</p>
+
+---
+
 # 03 — Brain-to-image editing problem
 
 ## From recovering content to decoding change
@@ -153,6 +160,7 @@ graph TD
 
 ## Editing changes the question
 
+<div class="editing-layout">
 <div class="quote-stage">
   <p class="muted">Reconstruction &amp; generation ask</p>
   <h3>“What is in the subject’s mind?”</h3>
@@ -160,6 +168,9 @@ graph TD
   <p class="accent">Editing asks</p>
   <h2>“How should <em>this image</em> change?”</h2>
 </div>
+
+<img class="paper-figure editing-examples" src="../assets/demo.png" />
+<d/iv>
 
 ---
 
@@ -219,11 +230,7 @@ graph TD
 
 ### Change what matters. Preserve what does not.
 
-<div class="preserve">
-  <div><span class="dot edit"></span><b>Edited region</b><small>must follow decoded intent</small></div>
-  <div><span class="dot keep"></span><b>Reference region</b><small>must remain recognizable and stable</small></div>
-</div>
-
+<img class="paper-figure editing-examples" src="../assets/constraint.png" />
 <p class="caption">Editing quality is a balance: semantic alignment × reference preservation.</p>
 
 ---
@@ -248,46 +255,22 @@ graph TD
 
 <p class="eyebrow">ZHOU ET AL. · NEURIPS 2025</p>
 
-### Neural-driven image editing with multimodal signals
+### Neural-driven image editing
 
-> A diffusion-transformer editor conditioned on brain and body signals—not text prompts alone.
-
-[arXiv:2507.05397](https://arxiv.org/abs/2507.05397)
+<img class="paper-figure teaser" src="../assets/loongx-teaser.png" alt="LoongX hands-free editing pipeline and multimodal BCI headset" />
+<p class="caption">LoongX overview and wearable sensing setup. Adapted from Zhou et al., <i>Neural-Driven Image Editing</i> (NeurIPS 2025).</p>
 
 Note:
 Position LoongX as a concrete implementation of f(I,B) → I′. It combines multiple signals, including optional speech, rather than assuming a single brain modality carries all intent.
 
 ---
 
-## LoongX: from signals to an edit
 
-<pre class="mermaid">
-flowchart LR
-    subgraph S["Multimodal signals"]
-      direction TB
-      GAP[" "]:::spacer
-      E[EEG] ~~~ N[fNIRS] ~~~ P[PPG] ~~~ M[Motion] ~~~ V[Speech]
-      GAP ~~~ E
-    end
-    S --> C["CS3 encoders"] --> G["Dynamic gated fusion"] --> D["DiT editor"] --> O["Edited image I′"]
-    I["Reference image I"] --> D
-    classDef signal fill:#2563eb,color:#fff,stroke:#1d4ed8
-    classDef image fill:#0891b2,color:#fff,stroke:#0e7490
-    classDef encoder fill:#0f766e,color:#fff,stroke:#115e59
-    classDef fusion fill:#7c3aed,color:#fff,stroke:#6d28d9
-    classDef editor fill:#be123c,color:#fff,stroke:#9f1239
-    classDef output fill:#ea580c,color:#fff,stroke:#c2410c
-    classDef spacer fill:transparent,stroke:transparent,color:transparent
-    class E,N,P,M,V signal
-    class I image
-    class C encoder
-    class G fusion
-    class D editor
-    class O output
-    style S fill:#eff6ff,stroke:#60a5fa,color:#1d4ed8,stroke-width:2px
-</pre>
 
-<p class="caption"><b>CS3</b> models each modality at multiple scales · <b>gated fusion</b> weights their contributions · <b>DiT</b> generates the edit.</p>
+## LoongX architecture
+
+<img class="paper-figure architecture" src="../assets/loongx-model.png" alt="LoongX model architecture showing multimodal encoders, dynamic gated fusion, and diffusion transformer editor" />
+<p class="caption">The full model combines modality-specific CS3 encoders, dynamic gated fusion (DGF), optional speech, and a diffusion transformer. Adapted from Zhou et al. (NeurIPS 2025).</p>
 
 ---
 
@@ -305,14 +288,14 @@ flowchart LR
 
 ## L-Mind dataset
 
+<img class="paper-figure dataset-figure" src="../assets/l-mind-dataset.png" alt="L-Mind multimodal data collection pipeline and image editing task taxonomy" />
+
 <div class="stat-row">
   <div><strong>~24K</strong><span>image–edit pairs</span></div>
   <div><strong>12</strong><span>subjects</span></div>
   <div><strong>5</strong><span>signal modalities</span></div>
-  <div><strong>1</strong><span>editing task</span></div>
+  <div><strong>35</strong><span>editing task</span></div>
 </div>
-
-<p class="caption">Subjects view a source image and imagine its intended transformation.</p>
 
 ---
 
@@ -325,6 +308,13 @@ flowchart LR
 | **CLIP-T** · text alignment | 0.2549 | — | **0.2588** |
 
 > **Takeaway:** neural signals can contribute useful editing guidance—and speech adds complementary information.
+
+---
+
+## Editing examples: neural intent to image changes
+
+<img class="paper-figure editing-examples" src="../assets/loongx-editing-examples.png" alt="LoongX qualitative editing examples for object, global, and text edits" />
+<p class="caption">LoongX qualitative comparisons across editing categories. Columns compare the original and ground truth with neural-only, neural-plus-speech, and text-only conditions. Adapted from Zhou et al. (NeurIPS 2025).</p>
 
 ---
 
