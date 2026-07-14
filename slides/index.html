@@ -1,568 +1,2126 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<!doctype html>
+<html lang="en" class="no-js">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Brain-to-Image Tasks — Introduction</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
-    <!-- Default to white theme -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme" />
-    <!-- Default to github light highlight style -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css" id="highlight-theme" />
-    <style>
-      :root { --ink: #0f172a; --muted: #64748b; --teal: #0f766e; --blue: #2563eb; --violet: #6d28d9; --orange: #ea580c; --line: #dbe4ee; }
-      .reveal { font-size: 31px; color: var(--ink); }
-      .reveal .slides { text-align: left; }
-      .reveal .slides section { padding: 24px 44px; }
-      .reveal h1, .reveal h2, .reveal h3 { color: var(--ink); text-transform: none; letter-spacing: -0.035em; }
-      .reveal h1 { font-size: 1.92em; font-weight: 800; }
-      .reveal h2 { font-size: 1.48em; font-weight: 760; margin-bottom: 0.5em; }
-      .reveal h3 { font-size: 1.02em; font-weight: 720; }
-      .reveal p { line-height: 1.35; }
-      .reveal strong { color: var(--teal); }
-      .reveal blockquote { width: 90%; border-left: 6px solid var(--teal); background: #f0fdfa; box-shadow: none; padding: 0.65em 0.9em; text-align: left; font-style: normal; }
-      .reveal table { font-size: 0.67em; margin: 0.5em auto; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 14px; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.07); }
-      .reveal table th { background: #0f172a; color: #fff; font-weight: 650; }
-      .reveal table td, .reveal table th { border: 0; padding: 0.48em 0.75em; }
-      .reveal table tr:nth-child(even) { background: #f8fafc; }
-      .reveal pre { font-size: 0.52em; box-shadow: none; }
-      .reveal .subtitle { color: var(--teal); margin-top: 0.5em; font-size: 0.78em; }
-      .reveal .slide-number {
-        right: 22px;
-        bottom: 20px;
-        padding: 0.38em 0.62em;
-        border-radius: 9px;
-        background: rgba(15, 23, 42, 0.88);
-        color: #fff;
-        font-size: 20px;
-        font-weight: 750;
-        letter-spacing: 0.03em;
-      }
-      .reveal .caption { color: var(--muted); font-size: 0.57em; margin-top: 0.8em; text-align: center; }
-      .reveal .eyebrow { color: var(--teal); font-size: 0.48em; font-weight: 800; letter-spacing: 0.13em; }
-      .reveal .muted { color: var(--muted); margin-bottom: 0.15em; }
-      .reveal .accent { color: var(--teal); font-weight: 750; margin: 0.35em 0 0; }
-      .reveal .hero-line { height: 7px; width: 142px; background: linear-gradient(90deg, var(--teal), var(--blue), var(--violet)); border-radius: 6px; margin: 0.8em 0; }
-      .reveal .big-formula { font-size: 1.55em; font-weight: 700; text-align: center; color: var(--teal); margin: 0.35em 0; }
-      .split { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.25em; align-items: center; }
-      .editing-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1em; align-items: center; }
-      .editing-copy { padding: 0.25em 0.2em; }
-      .editing-copy h3 { color: var(--teal); margin: 0 0 0.35em; }
-      .editing-copy .big-formula { text-align: left; font-size: 1.28em; margin: 0.1em 0 0.45em; }
-      .editing-copy > p { font-size: 0.64em; line-height: 1.45; }
-      .editing-diagram .mermaid { margin: 0; max-height: 50vh; }
-      .editing-diagram .mermaid svg { max-height: 45vh; }
-      .io-points { display: grid; gap: 0.35em; margin-top: 0.7em; }
-      .io-points div { padding: 0.42em 0.55em; background: #f0fdfa; border-left: 3px solid var(--teal); }
-      .io-points b { display: block; color: var(--teal); font-size: 0.57em; }
-      .io-points span { display: block; color: var(--muted); font-size: 0.5em; margin-top: 0.12em; }
-      .signal-stack { display: grid; gap: 0.35em; }
-      .signal-stack div { padding: 0.55em 0.7em; border: 1px solid var(--line); border-radius: 12px; background: #f8fafc; }
-      .signal-stack b { display: inline-block; min-width: 5em; color: var(--teal); }
-      .signal-stack span { color: var(--muted); font-size: 0.75em; }
-      .three-cards, .task-grid, .challenge-grid, .impact-grid, .stat-row, .future-path { display: grid; gap: 0.55em; }
-      .three-cards { grid-template-columns: repeat(3, 1fr); margin: 1.1em auto; width: 82%; text-align: center; }
-      .three-cards div { padding: 0.75em; border-radius: 14px; background: #f1f5f9; border-top: 4px solid var(--teal); }
-      .three-cards div:nth-child(2) { border-color: var(--blue); }.three-cards div:nth-child(3) { border-color: var(--violet); }
-      .three-cards strong { display: block; font-size: 1.05em; }.three-cards span { font-size: 0.65em; color: var(--muted); }
-      .roadmap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35em; margin-top: 1.4em; }
-      .roadmap div { padding: 0.65em 0.42em; min-height: 5.6em; border-left: 3px solid var(--line); background: #f8fafc; }
-      .roadmap b { color: var(--teal); font-size: 0.64em; display: block; }.roadmap span { display: block; font-weight: 750; font-size: 0.66em; margin: 0.35em 0; }.roadmap small { color: var(--muted); font-size: 0.46em; line-height: 1.2; display: block; }
-      .task-grid { grid-template-columns: 1fr 1fr; margin-top: 0.75em; }
-      .task-card { padding: 0.9em 1em; border-radius: 16px; color: #fff; min-height: 6.9em; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 7px 18px rgba(15,23,42,0.14); }.task-card h3, .task-card p, .task-card small { color: #fff; }.task-card h3 { margin: 0; }.task-card .formula { font-size: 1.1em; font-weight: 700; margin: 0.42em 0; }.task-card .katex, .task-card .katex * { color: #fff !important; }.task-card p:not(.formula) { font-size: 0.66em; margin: 0.3em 0; }.task-card small { font-size: 0.48em; opacity: 0.85; }.task-card.blue { background: #0f6b78; }.task-card.purple { background: #6d28d9; }
-      .related-task-diagrams { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 0.2em; }.related-task-diagrams > div { background: #f8fafc; border: 1px solid var(--line); border-radius: 14px; padding: 0.55em 0.65em; }.related-task-diagrams h3 { margin: 0; font-size: 0.78em; }.related-task-diagrams pre.mermaid { margin: 0.25em auto; max-height: 39vh; }.related-task-diagrams pre.mermaid svg { max-height: 35vh; }.related-task-diagrams p { color: var(--muted); font-size: 0.48em; margin: 0.2em 0 0; text-align: center; }
-      .quote-stage { text-align: center; margin-top: 0.6em; }.quote-stage h3 { font-size: 1em; }.quote-stage h2 { font-size: 1.32em; color: var(--teal); }.quote-stage em { color: var(--orange); }.arrow-down { color: var(--blue); font-size: 1.35em; }
-      .challenge-grid { grid-template-columns: 1fr 1fr; }.challenge-grid > div { border: 1px solid var(--line); border-radius: 12px; padding: 0.55em 0.7em; background: #fff; }.challenge-grid b { color: var(--orange); font-size: 0.55em; }.challenge-grid h3 { margin: 0.18em 0; font-size: 0.78em; }.challenge-grid p { font-size: 0.55em; color: var(--muted); margin: 0; }
-      .preserve { display: flex; justify-content: center; gap: 2em; margin: 1.5em 0 0.7em; }.preserve div { display: grid; grid-template-columns: 0.9em auto; column-gap: 0.45em; align-items: center; }.preserve b { font-size: 0.75em; }.preserve small { grid-column: 2; color: var(--muted); font-size: 0.48em; }.dot { width: 0.7em; height: 0.7em; border-radius: 50%; grid-row: span 2; }.dot.edit { background: var(--orange); }.dot.keep { background: var(--teal); }
-      .impact-grid { grid-template-columns: repeat(3, 1fr); margin-top: 0.9em; }.impact-grid div { background: #f8fafc; border-radius: 14px; padding: 0.75em; }.impact-grid span { color: var(--violet); font-size: 1.1em; }.impact-grid h3 { margin: 0.22em 0; font-size: 0.78em; }.impact-grid p { font-size: 0.54em; color: var(--muted); margin: 0; }
-      .stat-row { grid-template-columns: repeat(4, 1fr); margin: 1.4em 0; text-align: center; }.stat-row div { border-right: 1px solid var(--line); }.stat-row div:last-child { border: 0; }.stat-row strong { display: block; font-size: 1.48em; }.stat-row span { display: block; color: var(--muted); font-size: 0.55em; }
-      .limit-list { display: grid; gap: 0.28em; }.limit-list div { display: grid; grid-template-columns: 8em 1fr; gap: 0.5em; padding: 0.4em 0.65em; background: #f8fafc; border-left: 3px solid var(--orange); }.limit-list b { font-size: 0.65em; }.limit-list span { color: var(--muted); font-size: 0.58em; }
-      .future-path { grid-template-columns: repeat(3, 1fr); margin-top: 1.4em; }.future-path div { padding: 0.8em; border-top: 4px solid var(--teal); background: #f8fafc; }.future-path div:nth-child(2) { border-color: var(--blue); }.future-path div:nth-child(3) { border-color: var(--violet); }.future-path b { display: block; color: var(--teal); font-size: 0.62em; }.future-path span { display: block; font-size: 0.63em; margin-top: 0.38em; }
-      .summary-stack { display: grid; gap: 0.5em; margin-top: 0.75em; }.summary-stack div { padding: 0.55em 0.75em; background: #f0fdfa; border-radius: 10px; font-size: 0.68em; }.summary-stack div:nth-child(2) { background: #eff6ff; }.summary-stack div:nth-child(3) { background: #f5f3ff; }
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A structured knowledge base for Vision-Brain Modeling.">
+      
+      
+        <meta name="author" content="Antigravity">
+      
+      
+        <link rel="canonical" href="https://nghialt3670.github.io/vision-brain-modeling/slides/">
+      
+      
+        <link rel="prev" href="../resources/">
+      
+      
+        <link rel="next" href="../resources/datasets/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Slides - Vision-Brain Modeling</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
 
-      /* Mermaid: strip reveal.js pre styles, centre the SVG */
-      .reveal pre.mermaid {
-        background: transparent;
-        border: none;
-        box-shadow: none;
-        padding: 0;
-        margin: 0.5em auto;
-        font-size: 1em;
-        max-height: 48vh;
-        overflow: visible;
-        text-align: center;
-      }
-      .reveal pre.mermaid svg {
-        display: block;
-        width: 100% !important;
-        max-width: 100%;
-        max-height: 43vh;
-        height: auto !important;
-        margin: 0 auto;
-      }
-    </style>
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
   </head>
-  <body>
-    <div class="reveal">
-      <div class="slides">
-        <section
-          data-markdown
-          data-separator="^\n---\n$"
-          data-separator-vertical="^\n--\n$"
-          data-separator-notes="^Note:"
-          data-charset="utf-8"
-        >
-          <script type="text/template"># Brain-to-Image Editing
-
-## Decoding visual intent — not just visual content
-
-<div class="hero-line"></div>
-
-**Weekly research-direction report**
-
-Note:
-Welcome. This talk introduces brain-to-image editing: a setting where neural signals guide changes to an existing image rather than merely reconstructing what someone saw.
-
----
-
-## Roadmap
-
-<div class="roadmap">
-  <div><b>01</b><span>Foundations</span><small>Signals, encoding &amp; decoding</small></div>
-  <div><b>02</b><span>Related tasks</span><small>Reconstruction &amp; generation</small></div>
-  <div><b>03</b><span>The problem</span><small>Brain-to-image editing</small></div>
-  <div><b>04</b><span>Current state</span><small>LoongX case study</small></div>
-  <div><b>05</b><span>Next steps</span><small>Research direction</small></div>
-</div>
-
----
-
-# 01 — Foundations
-
-## What do brain signals let us model?
-
----
-
-## Vision–Brain Modeling
-
-<div class="split">
-<div>
-
-### A translation problem
-
-Connect **neural activity** to meaningful visual representations.
-
-</div>
-<div class="signal-stack">
-  <div><b>Encoding</b><span>image → predicted brain response</span></div>
-  <div><b>Decoding</b><span>brain response → image, concept, or intent</span></div>
-</div>
-</div>
-
-<p class="caption">This report focuses on decoding intent for brain-to-image editing.</p>
-
-Note:
-Encoding and decoding are the two established modelling directions. This report focuses on decoding intent.
-
----
-
-## What can we measure?
-
-| Modality | Measures | Spatial | Temporal | Cost | Invasiveness |
-|---|---|---|---|---|---|
-| **fMRI** | Blood oxygen changes (BOLD) | High | Low | Very high | Non-invasive |
-| **EEG** | Electrical activity | Low | High | Low | Non-invasive |
-| **MEG** | Magnetic fields | High | High | Very high | Non-invasive |
-| **fNIRS** | Blood oxygen changes | Medium | Low | Moderate | Non-invasive |
-| **PPG** | Blood volume pulse | None (peripheral) | High | Very low | Non-invasive |
-| **ECoG** | Electrical activity on cortex | Very high | Very high | Very high | Invasive |
-
-<p class="caption">Measurement choices determine the information available for decoding, as well as practical constraints on deployment.</p>
-
----
-
-# 02 — Related tasks
-
-## What has brain-to-image modelling already solved?
-
----
-
-## Two established tasks
-
-<div class="task-grid">
-  <div class="task-card blue">
-    <h3>Reconstruction</h3>
-    <p class="formula">$f: B \rightarrow \hat{I}$</p>
-    <p>Recover the image a person was shown.</p>
-    <small>Ground truth exists → direct evaluation</small>
-  </div>
-  <div class="task-card purple">
-    <h3>Generation</h3>
-    <p class="formula">$f: B \rightarrow \hat{I}$</p>
-    <p>Visualize imagery, dreams, or concepts.</p>
-    <small>No single ground truth → ambiguous evaluation</small>
-  </div>
-</div>
-
----
-
-## Reconstruction and generation
-
-<div class="related-task-diagrams">
-  <div>
-    <h3>Reconstruction</h3>
-<pre class="mermaid">
-graph TD
-    I["I — Visual Stimulus"] -->|presented to| U["U — Subject"]
-    U -->|produces| B["B — Brain Signals"]
-    B -->|input to| F["f — Reconstruction Function"]
-    F -->|predicts| IP["I' — Reconstructed Image"]
-
-    style I fill:#1565c0,color:#fff,stroke:#0d47a1,stroke-width:2px
-    style U fill:#6a1b9a,color:#fff,stroke:#4a148c,stroke-width:2px
-    style B fill:#2e7d32,color:#fff,stroke:#1b5e20,stroke-width:2px
-    style F fill:#37474f,color:#fff,stroke:#263238,stroke-width:2px
-    style IP fill:#bf360c,color:#fff,stroke:#7f0000,stroke-width:2px
-</pre>
-  </div>
-  <div>
-    <h3>Generation</h3>
-<pre class="mermaid">
-graph TD
-    U["U — Subject"] -->|imagines or dreams| B["B — Brain Signals"]
-    B -->|input to| F["f — Generation Function"]
-    F -->|predicts| IP["I' — Generated Image"]
-
-    style U fill:#6a1b9a,color:#fff,stroke:#4a148c,stroke-width:2px
-    style B fill:#2e7d32,color:#fff,stroke:#1b5e20,stroke-width:2px
-    style F fill:#37474f,color:#fff,stroke:#263238,stroke-width:2px
-    style IP fill:#bf360c,color:#fff,stroke:#7f0000,stroke-width:2px
-</pre>
-  </div>
-</div>
-
-<p class="caption">Both tasks decode content from brain activity; editing introduces a reference image and decodes intended change.</p>
-
----
-
-# 03 — Brain-to-image editing problem
-
-## From recovering content to decoding change
-
----
-
-## The central idea
-
-> **Can a system infer how you want an image to change—directly from brain activity?**
-
-<div class="three-cards">
-  <div><strong>See</strong><br><span>an image</span></div>
-  <div><strong>Imagine</strong><br><span>an edit</span></div>
-  <div><strong>Create</strong><br><span>the revised image</span></div>
-</div>
-
-<p class="caption">The reference image provides context; neural signals communicate intent.</p>
-
----
-
-## Editing changes the question
-
-<div class="quote-stage">
-  <p class="muted">Reconstruction &amp; generation ask</p>
-  <h3>“What is in the subject’s mind?”</h3>
-  <div class="arrow-down">↓</div>
-  <p class="accent">Editing asks</p>
-  <h2>“How should <em>this image</em> change?”</h2>
-</div>
-
----
-
-## Brain-to-image editing
-
-<div class="editing-layout">
-<div class="editing-copy">
-
-### Definition
-
-<p class="big-formula">f: (I, B) → I′</p>
-
-Learn an editing function that maps an observed image <i>I</i> and brain signals <i>B</i>—recorded while the subject imagines modifications to <i>I</i>—into an edited image <i>I′</i> matching the subject’s intended changes.
-
-<div class="io-points">
-  <div><b>Input</b><span>Reference image + imagined edit signals</span></div>
-  <div><b>Output</b><span>Intended edit with reference preservation</span></div>
-</div>
-
-</div>
-<div class="editing-diagram">
-
-<pre class="mermaid">
-graph TD
-    I["I — Observed Image"] -->|presented to| U["U — Subject"]
-    U -->|imagines modifications| B["B — Brain Signals"]
-
-    I -->|input to| F["f — Editing Function"]
-    B -->|input to| F
-
-    F -->|predicts| IP["I' — Edited Image"]
-
-    style I fill:#1565c0,color:#fff,stroke:#0d47a1,stroke-width:2px
-    style U fill:#6a1b9a,color:#fff,stroke:#4a148c,stroke-width:2px
-    style B fill:#2e7d32,color:#fff,stroke:#1b5e20,stroke-width:2px
-    style F fill:#37474f,color:#fff,stroke:#263238,stroke-width:2px
-    style IP fill:#bf360c,color:#fff,stroke:#7f0000,stroke-width:2px
-</pre>
-
-</div>
-</div>
-
----
-
-## What makes the task hard?
-
-<div class="challenge-grid">
-  <div><b>01</b><h3>Decode change</h3><p>Infer the intended transformation, not just perceived content.</p></div>
-  <div><b>02</b><h3>Preserve identity</h3><p>Keep everything outside the intended edit stable.</p></div>
-  <div><b>03</b><h3>Handle ambiguity</h3><p>One neural pattern can support many plausible edits.</p></div>
-  <div><b>04</b><h3>Work with noise</h3><p>Edit intent is subtle in low-signal neural measurements.</p></div>
-</div>
-
----
-
-## The non-negotiable constraint
-
-### Change what matters. Preserve what does not.
-
-<div class="preserve">
-  <div><span class="dot edit"></span><b>Edited region</b><small>must follow decoded intent</small></div>
-  <div><span class="dot keep"></span><b>Reference region</b><small>must remain recognizable and stable</small></div>
-</div>
-
-<p class="caption">Editing quality is a balance: semantic alignment × reference preservation.</p>
-
----
-
-## Why this matters
-
-<div class="impact-grid">
-  <div><span>⌁</span><h3>Accessibility</h3><p>Creative control without a keyboard, mouse, or speech.</p></div>
-  <div><span>✦</span><h3>Co-creation</h3><p>Make generative tools respond to subtle, pre-verbal intent.</p></div>
-  <div><span>↻</span><h3>Adaptive AI</h3><p>Use neural feedback to refine outputs in an interaction loop.</p></div>
-</div>
-
----
-
-# 04 — Current state
-
-## A first multimodal editing system
-
----
-
-## Case study: LoongX
-
-<p class="eyebrow">ZHOU ET AL. · NEURIPS 2025</p>
-
-### Neural-driven image editing with multimodal signals
-
-> A diffusion-transformer editor conditioned on brain and body signals—not text prompts alone.
-
-[arXiv:2507.05397](https://arxiv.org/abs/2507.05397)
-
-Note:
-Position LoongX as a concrete implementation of f(I,B) → I′. It combines multiple signals, including optional speech, rather than assuming a single brain modality carries all intent.
-
----
-
-## LoongX: from signals to an edit
-
-<pre class="mermaid">
-flowchart LR
-    subgraph S["Multimodal signals"]
-      direction TB
-      GAP[" "]:::spacer
-      E[EEG] ~~~ N[fNIRS] ~~~ P[PPG] ~~~ M[Motion] ~~~ V[Speech]
-      GAP ~~~ E
-    end
-    S --> C["CS3 encoders"] --> G["Dynamic gated fusion"] --> D["DiT editor"] --> O["Edited image I′"]
-    I["Reference image I"] --> D
-    classDef signal fill:#2563eb,color:#fff,stroke:#1d4ed8
-    classDef image fill:#0891b2,color:#fff,stroke:#0e7490
-    classDef encoder fill:#0f766e,color:#fff,stroke:#115e59
-    classDef fusion fill:#7c3aed,color:#fff,stroke:#6d28d9
-    classDef editor fill:#be123c,color:#fff,stroke:#9f1239
-    classDef output fill:#ea580c,color:#fff,stroke:#c2410c
-    classDef spacer fill:transparent,stroke:transparent,color:transparent
-    class E,N,P,M,V signal
-    class I image
-    class C encoder
-    class G fusion
-    class D editor
-    class O output
-    style S fill:#eff6ff,stroke:#60a5fa,color:#1d4ed8,stroke-width:2px
-</pre>
-
-<p class="caption"><b>CS3</b> models each modality at multiple scales · <b>gated fusion</b> weights their contributions · <b>DiT</b> generates the edit.</p>
-
----
-
-## Different signals, complementary clues
-
-| Signal | Primary role |
-|---|---|
-| **EEG + fNIRS** | Semantic intention and neural representation |
-| **PPG + motion** | Engagement and behavioral context |
-| **Speech (optional)** | Explicit semantic guidance |
-
-<p class="caption">Fusion is useful because intent is distributed: no single signal is sufficient in every moment.</p>
-
----
-
-## L-Mind dataset
-
-<div class="stat-row">
-  <div><strong>~24K</strong><span>image–edit pairs</span></div>
-  <div><strong>12</strong><span>subjects</span></div>
-  <div><strong>5</strong><span>signal modalities</span></div>
-  <div><strong>1</strong><span>editing task</span></div>
-</div>
-
-<p class="caption">Subjects view a source image and imagine its intended transformation.</p>
-
----
-
-## What the results suggest
-
-| Metric | Text baseline | Neural only | Neural + speech |
-|---|---:|---:|---:|
-| **CLIP-I** · image alignment | 0.6558 | **0.6605** | — |
-| **DINO** · visual similarity | 0.4636 | **0.4812** | — |
-| **CLIP-T** · text alignment | 0.2549 | — | **0.2588** |
-
-> **Takeaway:** neural signals can contribute useful editing guidance—and speech adds complementary information.
-
----
-
-# 05 — Next steps
-
-## From ideation to a focused research plan
-
----
-
-## Current limitations
-
-<div class="limit-list">
-  <div><b>Fine-grained intent</b><span>Abstract or precise instructions remain difficult.</span></div>
-  <div><b>Hardware burden</b><span>Reliable sensing is still specialized and inconvenient.</span></div>
-  <div><b>Generalization</b><span>Performance on unseen users and edit types is uncertain.</span></div>
-  <div><b>Interpretability</b><span>It is hard to diagnose why a decoded edit was wrong.</span></div>
-</div>
-
----
-
-## Next steps for this research direction
-
-<div class="future-path">
-  <div><b>01 · Build foundations</b><span>Strengthen neural-science knowledge and deep-learning fundamentals, with emphasis on generative image models.</span></div>
-  <div><b>02 · Map the literature</b><span>Review editing papers alongside reconstruction and generation: tasks, datasets, protocols, and evaluation.</span></div>
-  <div><b>03 · Synthesize approaches</b><span>Document recurring representations, conditioning strategies, model designs, and limitations; then identify a tractable research gap.</span></div>
-</div>
-
-<p class="caption">Near-term deliverable: a structured research map that connects foundations, papers, common approaches, and open questions.</p>
-
----
-
-# Closing summary
-
-## Research direction: brain-to-image editing
-
-<div class="summary-stack">
-  <div><b>Problem:</b> decode an intended modification from brain signals while preserving the reference image.</div>
-  <div><b>Current state:</b> multimodal work such as LoongX demonstrates early feasibility, but robust editing remains open.</div>
-  <div><b>Immediate priority:</b> strengthen foundations, review related-task literature, and map common approaches before defining a focused research question.</div>
-</div>
-
-<p class="subtitle">Discussion</p>
-
-Note:
-Close by restating that this is an ideation-stage direction. Invite discussion on the most promising foundational topics, papers, and possible research gaps.
-</script>
-        </section>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#slides" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Vision-Brain Modeling" class="md-header__button md-logo" aria-label="Vision-Brain Modeling" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vision-Brain Modeling
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Slides
+            
+          </span>
+        </div>
       </div>
     </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
 
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
-    <!-- Mermaid — loaded before Reveal so the class is available at init time -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <script>
-      // Render diagrams only after Reveal has created the markdown slides. Rendering
-      // them again while Reveal is changing slides can interrupt Mermaid mid-draw.
-      var renderCycle = 0;
-      var MERMAID_CONFIG = {
-        startOnLoad: false,
-        theme: "default",
-        themeVariables: { fontSize: "20px" },
-        flowchart: { useMaxWidth: false, htmlLabels: false }
-      };
 
-      mermaid.initialize(MERMAID_CONFIG);
 
-      Reveal.initialize({
-        hash: true,
-        slideNumber: "c/t",
-        showSlideNumber: "all",
-        transition: "slide",
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
-        math: { katex: { trust: true } },
-      });
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Vision-Brain Modeling" class="md-nav__button md-logo" aria-label="Vision-Brain Modeling" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
-      // Cache original mermaid source text before first render
-      function cacheMermaidSources() {
-        document.querySelectorAll("pre.mermaid").forEach(function (el) {
-          if (!el.dataset.src) {
-            el.dataset.src = el.textContent.trim();
-          }
-        });
-      }
+    </a>
+    Vision-Brain Modeling
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
 
-      // Render every diagram once with unique IDs. This avoids the partial first
-      // render caused by Mermaid and Reveal both mutating the same elements.
-      async function renderMermaid() {
-        mermaid.initialize(MERMAID_CONFIG);
-        renderCycle++;
-        var cycle = renderCycle;
-        var els = document.querySelectorAll("pre.mermaid");
-        for (var i = 0; i < els.length; i++) {
-          var el = els[i];
-          var src = el.dataset.src;
-          if (!src) continue;
-          // Unique element ID per render cycle so mermaid never finds a stale SVG node
-          var uid = "mrd-" + cycle + "-" + i;
-          try {
-            var result = await mermaid.render(uid, src);
-            el.innerHTML = result.svg;
-            el.setAttribute("data-processed", "true");
-          } catch (err) {
-            console.error("Mermaid render failed for element", i, err);
-          }
-        }
-        Reveal.sync();
-        Reveal.layout();
-      }
+    
+  </span>
+  
+  
 
-      // Wait for the browser's first layout and any web fonts before rendering.
-      // Mermaid can otherwise calculate a clipped SVG on the initial page load.
-      Reveal.on("ready", async function () {
-        cacheMermaidSources();
-        await new Promise(function (resolve) {
-          requestAnimationFrame(function () { requestAnimationFrame(resolve); });
-        });
-        if (document.fonts && document.fonts.ready) await document.fonts.ready;
-        await renderMermaid();
-      });
-    </script>
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../foundations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../foundations/brain-signals/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brain Signals
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Brain Signals
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/brain-signals/fmri/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fMRI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/brain-signals/eeg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EEG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/brain-signals/meg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MEG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/brain-signals/fnirs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fNIRS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/brain-signals/ppg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PPG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/brain-signals/ecog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ECoG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../foundations/vision-models/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vision Models
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Vision Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/cnn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CNN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/vit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vision Transformer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/clip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLIP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/dino/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DINO / DINOv2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/mae/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MAE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/sam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-models/diffusion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diffusion Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../foundations/vision-brain-modeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vision-Brain Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../tasks/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tasks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks/brain-to-image-reconstruction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brain-to-Image Reconstruction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks/brain-to-image-generation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brain-to-Image Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tasks/brain-to-image-editing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brain-to-Image Editing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../approaches/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Approaches
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Approaches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../approaches/direct-mapping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Direct Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../approaches/latent-alignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Latent Alignment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../approaches/generative-conditioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generative Conditioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../approaches/interactive-feedback.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive Feedback
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../works/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Works
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Works
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../works/papers/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Papers
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Papers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../works/papers/zhou-et-al-2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zhou et al. (LoongX)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../works/challenges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Challenges & Ethical Issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../works/future-directions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Future Directions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../resources/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Slides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vision-brain-modeling/slides/brain-to-image-editing-introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brain-to-Image Editing Intro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../resources/datasets/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datasets
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Datasets
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/nsd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/vim-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vim-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/god/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GOD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/ds001506/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ds001506
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/things/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    THINGS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/bold5000/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BOLD5000
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/eeg-imagenet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EEG-ImageNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/datasets/loongx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LoongX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/conferences/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conferences
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/journals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="slides">Slides</h1>
+<p>Reveal.js presentations for Vision-Brain Modeling.</p>
+<ul>
+<li><a href="brain-to-image-editing-introduction/">Brain-to-Image Editing Introduction</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+      
+    
   </body>
 </html>
