@@ -685,10 +685,11 @@
         data-charset="utf-8">
         <script type="text/template"># Brain-in-the-Loop Image Editing
 
-## Introduction
+## Progress Report: Vector-Guided Latent Steering via Cognitive Feedback
+
 <div class="hero-line"></div>
 
-**Weekly Research Report: From Direct Neural Mapping to Interactive Latent Steering**
+**Weekly Progress Report: From Direct Neural Mapping to Interactive Latent Steering**
 
 Note:
 Chào mọi người, trong buổi báo cáo tiến độ hôm nay, mình muốn chia sẻ về hướng tiếp cận mới: Chỉnh sửa ảnh thông qua tín hiệu não theo cơ chế tương tác liên tục (Brain-in-the-Loop Image Editing). Chúng ta sẽ cùng nhìn lại những hạn chế cốt lõi của các phương pháp một lượt (one-shot) hiện nay, từ đó làm rõ lý do vì sao cần chuyển sang mô hình vòng lặp khép kín. Sau đó, mình sẽ trình bày chi tiết về thiết kế thực nghiệm, công thức toán học và bộ ba bài kiểm tra thống kê trên dữ liệu EEG 4 kênh, trước khi đi vào mục tiêu trọng tâm trong giai đoạn tiếp theo.
@@ -1046,7 +1047,7 @@ $$ \mathbf{z}\_{src} = \frac{E(I\_{src})}{\Vert E(I\_{src}) \Vert\_2}, \quad \ma
 ### 2. Direction Vectors &amp; Loss
 * **Ground-Truth:** $\mathbf{v} = \mathbf{z}\_{tgt} - \mathbf{z}\_{src},\quad \mathbf{d}\_{gt} = \mathbf{v} / \Vert \mathbf{v} \Vert\_2$
 * **Predicted:** $\Delta \mathbf{z}\_{eeg} = g\_\theta(\mathbf{X}\_{eeg}),\quad \Vert \Delta \mathbf{z}\_{eeg} \Vert\_2 = 1$
-* **Loss:** $\mathcal{L}\_{dir} = 1 - \cos(\Delta \mathbf{z}\_{eeg},\, \mathbf{d}\_{gt})$
+* **Loss:** $\mathcal{L}\_{dir} = 1 - \cos(\Delta \mathbf{z}\_{eeg}\, \mathbf{d}\_{gt})$
 
 Note:
 Về mặt công thức: Ảnh gốc $I_{src}$ và ảnh đích $I_{tgt}$ được chiếu vào không gian nhúng CLIP rồi chuẩn hóa L2 về mặt cầu đơn vị 512 chiều. Vector hướng chuẩn $d_{gt}$ chính là vector hiệu đã được chuẩn hóa. Mạng EEG $g_\theta$ sẽ học cách ánh xạ dữ liệu EEG 4 kênh thành một vector đơn vị $\Delta z_{eeg}$ sao cho góc giữa hai vector này là nhỏ nhất.
@@ -1155,19 +1156,23 @@ Section 5 outlines our single focus: empirically proving that 4-channel non-inva
 
 <div class="task-grid">
   <div class="task-card blue">
-    <h3>1. Contrastive Loss Training</h3>
-    <p>Train EEGNet encoder using <b>InfoNCE contrastive loss</b> ($\tau = 0.07$) to eliminate global dataset vector collapse.</p>
+    <h3>1. Directional Intent Proof</h3>
+    <p>Train EEGNet with <b>InfoNCE contrastive loss</b> ($\tau = 0.07$) to decode unit direction $\mathbf{d}\_{eeg} \in \mathbb{S}^{511}$ and execute 3-tier statistical proof suite.</p>
   </div>
   <div class="task-card purple">
-    <h3>2. Run 3-Tier Proof Suite</h3>
-    <p>Execute <b>Test 1</b> (Heading Accuracy), <b>Test 2</b> (Distance Reduction), and <b>Test 3</b> (Permutation Test) on held-out samples.</p>
+    <h3>2. Dynamic Magnitude Decoding</h3>
+    <p>Predict edit intensity $\Vert\Delta\mathbf{z}\Vert\_2 = f(B)$ from EEG to adaptively control step size $\alpha(B)$ (distinguishing subtle edits from major visual overhauls).</p>
   </div>
 </div>
 
 Note:
-Lộ trình thực hiện gồm 2 bước rất cụ thể: Bước 1 là áp dụng hàm mất mát tương phản InfoNCE ($\tau = 0.07$) khi huấn luyện EEGNet để triệt tiêu triệt để hiện tượng mô hình bị suy biến về vector trung bình của dataset. Bước 2 là chạy lại toàn bộ bộ 3 bài kiểm tra thống kê trên tập test độc lập để ghi nhận kết quả.
+Lộ trình thực nghiệm gồm 2 mục tiêu cốt lõi: 
+1) **Giải mã Hướng Ý định (Direction):** Huấn luyện EEGNet với hàm mất mát tương phản InfoNCE ($\tau = 0.07$) để triệt tiêu hiện tượng suy biến vector và chạy bộ 3 bài test thống kê.
+2) **Giải mã Cường độ / Độ lớn (Magnitude):** Hiện tại chúng ta đang cố định bước nhảy $\alpha = 0.1$. Trong tương lai, việc giải mã độ lớn $\|\Delta \mathbf{z}\|_2$ từ sóng não sẽ giúp hệ thống tự điều chỉnh độ nhích lớn hay nhỏ tùy thuộc vào ý định chỉnh sửa nhẹ hay thay đổi toàn bộ của người dùng.
 
-Our next step has one single objective: prove that EEG works. We will train the EEG encoder with InfoNCE contrastive loss to force sample-specific intent decoding, and then run our complete 3-tier statistical proof suite on held-out test data.
+Our empirical roadmap focuses on two core objectives:
+1) **Directional Intent Decoding:** Train EEGNet with InfoNCE contrastive loss ($\tau = 0.07$) to eliminate vector collapse and run our 3-tier statistical proof suite for directional unit vectors.
+2) **Dynamic Magnitude Decoding:** In addition to unit direction, predict edit intensity $\|\Delta\mathbf{z}\|_2 = f(B)$ from EEG signals to dynamically adapt step size $\alpha(B)$, differentiating subtle touch-ups from major visual transformations.
 
 ---
 
