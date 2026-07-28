@@ -74,7 +74,13 @@ nav:
       - tasks/index.md
       - Brain-to-Image Reconstruction: tasks/brain-to-image-reconstruction.md
       - Brain-to-Image Generation: tasks/brain-to-image-generation.md
-      - Brain-to-Image Editing: tasks/brain-to-image-editing.md
+      - Brain-to-Image Editing:
+        - tasks/brain-to-image-editing/index.md
+        - Definition: tasks/brain-to-image-editing/definition.md
+        - Motivation: tasks/brain-to-image-editing/motivation.md
+      - Brain-in-the-loop Image Editing:
+        - tasks/brain-in-the-loop-image-editing/index.md
+        - Definition: tasks/brain-in-the-loop-image-editing/definition.md
   - Approaches:
       - approaches/index.md
       - Direct Mapping: approaches/direct-mapping.md
@@ -92,7 +98,8 @@ nav:
       - resources/index.md
       - Slides:
           - slides/index.md
-          - Brain-to-Image Editing Intro: /vision-brain-modeling/slides/brain-to-image-editing-introduction/
+          - Brain-to-Image Editing Introduction: /vision-brain-modeling/slides/brain-to-image-editing-introduction/
+          - Brain-in-the-loop Image Editing: /vision-brain-modeling/slides/brain-in-the-loop-image-editing/
       - Datasets:
           - resources/datasets/index.md
           - NSD: resources/datasets/nsd.md
