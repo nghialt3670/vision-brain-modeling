@@ -1093,7 +1093,7 @@ Test 1 evaluates directional heading accuracy. In a 512-dimensional continuous s
 
 **Hypothesis:** Predicted EEG vector reduces distance to target in CLIP space ($H\_0: D\_{before} \le D\_{after}$).
 
-$$ D = \Vert \mathbf{z}\_{src} + \alpha\,\Delta\mathbf{z}\_{eeg} - \mathbf{z}\_{tgt} \Vert\_2 $$
+$$ D = \Vert \mathbf{z}\_{src} + \alpha\cdot\Delta\mathbf{z}\_{eeg} - \mathbf{z}\_{tgt} \Vert\_2 $$
 
 * **Metric:** Distance reduction rate with step size $\alpha = 0.1$.
 * **Protocol:** Shift source embedding along predicted vector and re-measure distance to target.
